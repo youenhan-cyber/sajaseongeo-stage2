@@ -112,6 +112,10 @@ body {
   100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15) rotate(var(--rot)); opacity: 0; }
 }
 
+.top-victory {
+  padding-top: 36px;
+}
+
 /* ── 헤더 ── */
 header {
   position: relative; z-index: 1;
@@ -324,12 +328,20 @@ header {
 <body>
 <div class="embers"></div>
 
+<!-- 완전 정복 축하 배너 (맨 위 = 30단계를 모두 마치고 도착했을 때만 보임) -->
+<div class="castle-goal top-victory" id="topVictoryBanner" style="display:none;">
+  <div class="castle-glow"></div>
+  <div class="castle-emoji">🏰</div>
+  <div class="castle-title">사자성어 왕국</div>
+  <div class="castle-sub">🎉 사자성어 왕국을 완전히 정복했어요!<br>정말 대단해요, 최고의 정복자! 👑✨</div>
+</div>
+
 <!-- 맵 (아래→위로 올라가는 지그재그, 베이스캠프에서 성으로) -->
 <div class="map-wrap" id="mapWrap"></div>
 
 <div class="coming-soon">✨ 더 많은 사자성어가 곧 산 너머에서 찾아와요!</div>
 
-<!-- 성 목표 배너 + 헤더 + 챕터 라벨 (맨 아래로 이동: 처음 열었을 때 베이스캠프와 함께 보이도록) -->
+<!-- 성 목표 배너(진행 상황) + 헤더 + 챕터 라벨 (맨 아래: 처음 열었을 때 베이스캠프와 함께 보임) -->
 <div class="castle-goal" id="castleGoal">
   <div class="castle-glow"></div>
   <div class="castle-emoji">🏰</div>
@@ -453,17 +465,22 @@ function renderMap() {
 
   const doneCount = stages.filter(s=>!!prog[s.id]).length;
   const remaining = stages.length - doneCount;
-  const goalEl = document.getElementById('castleGoal');
+
+  // 아래쪽 배너(시작 지점 근처): 항상 진행 상황만 보여줌 (축하 효과는 위쪽 배너가 전담)
   document.getElementById('goalSub').innerHTML =
     remaining<=0
-      ? '🎉 사자성어 왕국을 완전히 정복했어요!<br>정말 대단해요, 최고의 정복자! 👑✨'
+      ? '🏆 모든 정복을 마쳤어요!<br>맨 위로 올라가 왕관을 확인해보세요 👑⬆️'
       : `앞으로 ${remaining}단계 남았어요!`;
 
+  // 맨 위쪽 배너(성 도착 지점): 다 정복했을 때만 나타나며 축하 효과 전담
+  const topBanner = document.getElementById('topVictoryBanner');
   if (remaining<=0) {
-    goalEl.classList.add('complete');
-    spawnConfetti(goalEl);
+    topBanner.style.display = 'block';
+    topBanner.classList.add('complete');
+    spawnConfetti(topBanner);
   } else {
-    goalEl.classList.remove('complete');
+    topBanner.style.display = 'none';
+    topBanner.classList.remove('complete');
   }
 
   // 베이스캠프(첫 스테이지)가 맨 아래, 성(마지막 스테이지)이 맨 위에 오도록 역순으로 그림
@@ -542,8 +559,8 @@ function spawnConfetti(container){
   setTimeout(() => {
     burst.remove();
     confettiSpawned = false;
-    if (document.getElementById('castleGoal').classList.contains('complete')) {
-      spawnConfetti(document.getElementById('castleGoal'));
+    if (document.getElementById('topVictoryBanner').classList.contains('complete')) {
+      spawnConfetti(document.getElementById('topVictoryBanner'));
     }
   }, 4000);
 }
