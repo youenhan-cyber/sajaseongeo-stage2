@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한자 카드 헌터 - 성 정복 지도</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --night:   #150C06;
+  --ember:   #4A2010;
+  --clay:    #6B2E12;
+  --clay2:   #7A3416;
+  --torch:   #E08A34;
+  --gold:    #F5B942;
+  --goldlt:  #FFD98A;
+  --parchment: #F3E4C8;
+  --parchment-dim: rgba(243,228,200,0.55);
+  --parchment-faint: rgba(243,228,200,0.28);
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--parchment);
+  background: linear-gradient(to top,
+    var(--night) 0%, #241207 20%, #341808 40%, var(--ember) 60%, var(--clay) 78%, var(--clay2) 92%, #86401c 100%
+  );
+}
+
+/* 떠다니는 불씨 */
+.embers {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 12%, rgba(245,185,66,0.55) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 32% 28%, rgba(224,138,52,0.4)  0%, transparent 100%),
+    radial-gradient(2px   2px   at 58% 8%,  rgba(245,185,66,0.5)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 78% 22%, rgba(224,138,52,0.35) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 90% 40%, rgba(245,185,66,0.4)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 22% 58%, rgba(224,138,52,0.25) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 68% 72%, rgba(245,185,66,0.3)  0%, transparent 100%),
+    radial-gradient(2px   2px   at 42% 88%, rgba(224,138,52,0.2)  0%, transparent 100%);
+}
+
+/* ── 성 목표 배너 (맨 위) ── */
+.castle-goal {
+  position: relative; z-index: 1;
+  max-width: 420px; margin: 0 auto;
+  padding: 22px 16px 8px;
+  text-align: center;
+}
+.castle-glow {
+  position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+  width: 260px; height: 200px;
+  background: radial-gradient(ellipse at center, rgba(245,185,66,0.30) 0%, rgba(245,185,66,0.10) 45%, transparent 75%);
+  pointer-events: none; z-index: -1;
+}
+.castle-emoji { font-size: 44px; animation: castleFloat 3.2s ease-in-out infinite; }
+@keyframes castleFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+.castle-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 17px; font-weight: 900; color: var(--goldlt);
+  letter-spacing: 1px; margin-top: 6px;
+  text-shadow: 0 0 18px rgba(245,185,66,0.5);
+}
+.castle-sub {
+  font-size: 11px; color: var(--parchment-dim); margin-top: 4px; font-weight: 700;
+}
+
+/* ── 완전 정복 축하 효과 ── */
+.castle-goal.complete .castle-emoji { animation: castleFloat 3.2s ease-in-out infinite, victoryZoom 1.6s ease-in-out infinite; }
+@keyframes victoryZoom { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.12); } }
+.castle-goal.complete .castle-title {
+  font-size: 19px;
+  background: linear-gradient(90deg, var(--goldlt), var(--gold), var(--goldlt));
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: victoryShine 2s linear infinite;
+}
+@keyframes victoryShine { 0%{ background-position: 0% center; } 100%{ background-position: 200% center; } }
+.castle-goal.complete .castle-sub {
+  color: var(--goldlt); font-size: 13px; font-weight: 900;
+  margin-top: 8px; line-height: 1.6;
+  text-shadow: 0 0 10px rgba(245,185,66,0.6);
+}
+.castle-goal.complete .castle-glow {
+  width: 320px; height: 260px;
+  background: radial-gradient(ellipse at center, rgba(245,185,66,0.5) 0%, rgba(245,185,66,0.18) 45%, transparent 75%);
+  animation: glowPulse 1.6s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%,100%{ opacity:0.75; } 50%{ opacity:1; } }
+
+.confetti-burst {
+  position: absolute; inset: 0; overflow: visible;
+  pointer-events: none; z-index: 2;
+}
+.confetti-piece {
+  position: absolute; top: 50%; left: 50%;
+  font-size: 20px; opacity: 0;
+  animation: burstOut 1.5s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes burstOut {
+  0%   { transform: translate(-50%,-50%) scale(0.2) rotate(0deg); opacity: 1; }
+  60%  { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15) rotate(var(--rot)); opacity: 0; }
+}
+
+/* ── 헤더 ── */
+header {
+  position: relative; z-index: 1;
+  padding: 14px 16px 12px;
+  max-width: 420px; margin: 0 auto;
+}
+.app-row {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 12px;
+}
+.app-logo-title {
+  display: flex; align-items: center; gap: 8px;
+}
+.app-logo { font-size: 26px; }
+.app-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 19px; font-weight: 900; color: var(--parchment);
+  text-shadow: 0 0 14px rgba(245,185,66,0.3);
+}
+.app-title span { color: var(--gold); }
+
+/* 레벨 카드 */
+.level-card {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(21,12,6,0.55);
+  backdrop-filter: blur(3px);
+  border: 1.5px solid rgba(245,185,66,0.28);
+  border-radius: 14px; padding: 10px 14px;
+}
+.level-icon { font-size: 24px; }
+.level-info { flex: 1; }
+.level-name { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+.level-bar-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+.level-bar-fill  { height: 100%; background: linear-gradient(90deg,var(--torch),var(--gold)); border-radius: 3px; transition: width 1.2s ease; }
+.level-cards-text { font-size: 10px; color: var(--parchment-faint); margin-top: 3px; }
+
+/* 챕터 */
+.chapter-label {
+  position: relative; z-index: 1;
+  text-align: center; padding: 10px 0 6px;
+}
+.chapter-badge {
+  display: inline-block;
+  background: linear-gradient(135deg,var(--gold),var(--torch));
+  color: #2B1508; font-size: 12px; font-weight: 900;
+  padding: 5px 16px; border-radius: 20px; letter-spacing: 1px;
+  box-shadow: 0 3px 14px rgba(224,138,52,0.4);
+}
+
+/* ── 맵 ── */
+.map-wrap {
+  position: relative; z-index: 1;
+  max-width: 420px; margin: 0 auto;
+  padding: 4px 16px 16px;
+}
+
+/* 연결선 (위로 올라가는 경로) */
+.path-line {
+  display: flex; justify-content: center; align-items: center;
+  height: 32px; position: relative;
+}
+.path-line::before {
+  content: ''; position: absolute;
+  width: 3px; height: 100%;
+  left: 50%; transform: translateX(-50%);
+  border-radius: 2px;
+}
+.path-line.done-line::before   { background: linear-gradient(to top, rgba(245,185,66,0.6), rgba(245,185,66,0.2)); }
+.path-line.future-line::before { background: rgba(255,255,255,0.06); }
+.path-arrow {
+  font-size: 16px; position: relative; z-index: 1;
+  background: var(--night); padding: 0 5px; border-radius: 4px; line-height: 1;
+}
+.path-line.done-line   .path-arrow { color: rgba(245,185,66,0.75); }
+.path-line.future-line .path-arrow { color: rgba(255,255,255,0.12); }
+
+/* 스테이지 행 */
+.stage-row {
+  display: flex; align-items: center; gap: 12px;
+  animation: fadeIn 0.45s both;
+}
+.stage-row.right { flex-direction: row-reverse; }
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* 노드 버튼 */
+.node-btn {
+  width: 72px; height: 72px; flex-shrink: 0;
+  border-radius: 20px; border: none;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px;
+  cursor: pointer; position: relative;
+  transition: transform 0.15s;
+}
+.node-btn:active { transform: scale(0.92); }
+.node-btn.done {
+  background: linear-gradient(135deg,var(--clay),var(--clay2));
+  box-shadow: 0 4px 14px rgba(107,46,18,0.6);
+}
+.node-btn.current {
+  background: linear-gradient(135deg,var(--gold),var(--torch));
+  box-shadow: 0 4px 22px rgba(245,185,66,0.7);
+  animation: nodePulse 1.8s ease-in-out infinite;
+}
+@keyframes nodePulse {
+  0%,100% { box-shadow: 0 4px 22px rgba(245,185,66,0.7); transform: scale(1); }
+  50%      { box-shadow: 0 6px 32px rgba(245,185,66,0.95); transform: scale(1.05); }
+}
+.node-btn.locked {
+  background: rgba(255,255,255,0.04);
+  border: 2px dashed rgba(255,255,255,0.12);
+  cursor: default;
+}
+.node-btn.locked:active { transform: none; }
+
+.node-emoji { font-size: 26px; line-height: 1; }
+.node-num   { font-size: 10px; font-weight: 900; color: rgba(255,255,255,0.4); }
+.node-btn.current .node-num { color: rgba(43,21,8,0.65); }
+.node-btn.done    .node-num { color: var(--goldlt); }
+
+.node-stamp {
+  position: absolute; top: -8px; right: -8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; background: var(--night);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+/* 정보 카드 */
+.node-info {
+  flex: 1; border-radius: 14px; padding: 11px 13px;
+  border: 1px solid transparent; max-width: 215px;
+}
+.node-info.done-info    { background: rgba(224,138,52,0.10);  border-color: rgba(245,185,66,0.22); }
+.node-info.current-info { background: rgba(245,185,66,0.14);  border-color: rgba(245,185,66,0.45); }
+.node-info.locked-info  { background: rgba(255,255,255,0.025); opacity: 0.38; }
+
+.info-hanja  { font-family:'Noto Serif KR',serif; font-size:15px; font-weight:900; letter-spacing:3px; margin-bottom:2px; }
+.info-korean { font-size:13px; font-weight:700; margin-bottom:3px; }
+.info-meaning{ font-size:11px; line-height:1.5; }
+
+.done-text    { color: var(--goldlt); }
+.current-text { color: var(--parchment); }
+.locked-text  { color: rgba(255,255,255,0.22); }
+.info-meaning.done-text    { color: rgba(243,228,200,0.55); }
+.info-meaning.current-text { color: rgba(243,228,200,0.8); }
+
+.tap-hint {
+  display: inline-block; margin-top: 6px;
+  background: var(--gold); color: #2B1508;
+  font-size: 11px; font-weight: 900;
+  padding: 3px 10px; border-radius: 10px;
+  animation: blink 1.4s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+.grade-row {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 5px; font-size: 11px; color: rgba(243,228,200,0.5);
+}
+
+/* 맨 아래 베이스캠프 */
+.base-camp {
+  position: relative; z-index: 1;
+  text-align: center; padding: 6px 0 36px;
+}
+.camp-inner {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(21,12,6,0.4);
+  border: 1px dashed rgba(245,185,66,0.25);
+  border-radius: 20px; padding: 8px 20px;
+  font-size: 13px; color: rgba(245,185,66,0.55);
+  font-weight: 700; letter-spacing: 1px;
+}
+
+/* 팝업 */
+.popup-bg {
+  position: fixed; inset: 0; background: rgba(10,5,2,0.85);
+  display: none; align-items: center; justify-content: center; z-index: 100;
+}
+.popup-bg.show { display: flex; }
+.popup-box {
+  background: linear-gradient(135deg,var(--ember),var(--night));
+  border: 2px solid var(--gold); border-radius: 28px;
+  padding: 36px 28px; text-align: center;
+  max-width: 300px; width: 90%;
+  animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn {
+  from { transform:scale(0.6) rotate(-5deg); opacity:0; }
+  to   { transform:scale(1) rotate(0); opacity:1; }
+}
+.popup-emoji { font-size: 56px; margin-bottom: 12px; animation: castleFloat 2s ease-in-out infinite; }
+.popup-title { font-family:'Noto Serif KR',serif; font-size:21px; font-weight:900; color:var(--gold); letter-spacing:2px; margin-bottom:8px; }
+.popup-desc  { font-size:14px; color:rgba(243,228,200,0.8); line-height:1.7; margin-bottom:22px; white-space:pre-line; }
+.popup-btn   { width:100%; padding:14px; background:linear-gradient(135deg,var(--gold),var(--torch)); color:#2B1508; border:none; border-radius:14px; font-size:16px; font-weight:900; font-family:'Noto Sans KR',sans-serif; cursor:pointer; }
+
+/* 빈 칸 안내 */
+.coming-soon {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: rgba(243,228,200,0.3);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="embers"></div>
+
+<!-- 맵 (아래→위로 올라가는 지그재그, 베이스캠프에서 성으로) -->
+<div class="map-wrap" id="mapWrap"></div>
+
+<div class="coming-soon">✨ 더 많은 사자성어가 곧 산 너머에서 찾아와요!</div>
+
+<!-- 성 목표 배너 + 헤더 + 챕터 라벨 (맨 아래로 이동: 처음 열었을 때 베이스캠프와 함께 보이도록) -->
+<div class="castle-goal" id="castleGoal">
+  <div class="castle-glow"></div>
+  <div class="castle-emoji">🏰</div>
+  <div class="castle-title">사자성어 왕국</div>
+  <div class="castle-sub" id="goalSub">앞으로 30단계 남았어요!</div>
+</div>
+
+<header>
+  <div class="app-row">
+    <div class="app-logo-title">
+      <div class="app-logo">🃏</div>
+      <div class="app-title">한자 카드 <span>헌터</span></div>
+    </div>
+  </div>
+  <div class="level-card">
+    <div class="level-icon" id="lvIcon">🌱</div>
+    <div class="level-info">
+      <div class="level-name" id="lvName">새싹 학자 Lv.1</div>
+      <div class="level-bar-track"><div class="level-bar-fill" id="lvBar" style="width:0%"></div></div>
+      <div class="level-cards-text" id="lvCards">한자 카드 0 / 20장</div>
+    </div>
+  </div>
+</header>
+
+<div class="chapter-label">
+  <div class="chapter-badge">⛰️ 두 번째 정복 여정</div>
+</div>
+
+<!-- 맨 아래 베이스캠프 -->
+<div class="base-camp">
+  <div class="camp-inner">⛺ 베이스캠프 · 정복은 여기서 시작돼요</div>
+</div>
+
+<!-- 팝업 -->
+<div class="popup-bg" id="popup">
+  <div class="popup-box">
+    <div class="popup-emoji">🚩</div>
+    <div class="popup-title" id="popupTitle">진지 점령!</div>
+    <div class="popup-desc"  id="popupDesc"></div>
+    <button class="popup-btn" onclick="closePopup()">계속 정복하기! ⛰️</button>
+  </div>
+</div>
+
+<script>
+// ── 스테이지 목록 (031~060, 사자성어 추가될 때마다 여기에 한 줄씩 추가) ──
+const stages = [
+  { id:'uwangjwawang',      hanja:'右往左往', korean:'우왕좌왕', meaning:'갈피를 못 잡고 이리저리 헤매다',        emoji:'🔀', file:'031_uwangjwawang.html' },
+  { id:'seolsanggasang',    hanja:'雪上加霜', korean:'설상가상', meaning:'눈 위에 서리까지, 안 좋은 일이 겹치다',   emoji:'❄️', file:'032_seolsanggasang.html' },
+  { id:'anhamuin',          hanja:'眼下無人', korean:'안하무인', meaning:'눈 아래 사람이 없는 듯 교만하게 굴다',    emoji:'😤', file:'033_anhamuin.html' },
+  { id:'ilchwiwoljang',     hanja:'日就月將', korean:'일취월장', meaning:'나날이 다달이 크게 발전하다',           emoji:'📈', file:'034_ilchwiwoljang.html' },
+  { id:'soksumuchaek',      hanja:'束手無策', korean:'속수무책', meaning:'손을 묶은 듯 어찌할 방법이 없다',        emoji:'🙅', file:'035_soksumuchaek.html' },
+  { id:'review2_1',         hanja:'★ 復習 ★', korean:'복습 코너', meaning:'지금까지 배운 다섯 사자성어를 모두 모아 복습해요!', emoji:'🏆', file:'036_review.html' },
+  { id:'jasugeongga',       hanja:'自手成家', korean:'자수성가', meaning:'자기 힘으로 집안을 일으켜 세우다',       emoji:'🏠', file:'037_jasugeongga.html' },
+  { id:'jahwajachan',       hanja:'自畵自讚', korean:'자화자찬', meaning:'자기가 한 일을 스스로 자랑하다',        emoji:'😎', file:'038_jahwajachan.html' },
+  { id:'japojagi',          hanja:'自暴自棄', korean:'자포자기', meaning:'실망하여 스스로를 포기하다',            emoji:'🙇', file:'039_japojagi.html' },
+  { id:'ilsimdongche',      hanja:'一心同體', korean:'일심동체', meaning:'한마음 한몸처럼 뜻과 힘을 합치다',       emoji:'🤝', file:'040_ilsimdongche.html' },
+  { id:'ilpyeondansim',     hanja:'一片丹心', korean:'일편단심', meaning:'변치 않는 한 조각의 붉은 참된 마음',      emoji:'💗', file:'041_ilpyeondansim.html' },
+  { id:'review2_2',         hanja:'★ 復習 ★', korean:'복습 코너', meaning:'지금까지 배운 다섯 사자성어를 모두 모아 복습해요!', emoji:'🏆', file:'042_review.html' },
+  { id:'ilgeoyangdeuk',     hanja:'一擧兩得', korean:'일거양득', meaning:'한 가지 일로 두 가지 이익을 얻다',       emoji:'🎯', file:'043_ilgeoyangdeuk.html' },
+  { id:'jukmagou',          hanja:'竹馬故友', korean:'죽마고우', meaning:'어릴 때부터 함께 자란 오랜 친구',        emoji:'👬', file:'044_jukmagou.html' },
+  { id:'iljangildan',       hanja:'一長一短', korean:'일장일단', meaning:'좋은 점도 나쁜 점도 한 가지씩 있다',      emoji:'⚖️', file:'045_iljangildan.html' },
+  { id:'daegimanseong',     hanja:'大器晩成', korean:'대기만성', meaning:'큰 인물은 오랜 시간에 걸쳐 이루어진다',   emoji:'⏳', file:'046_daegimanseong.html' },
+  { id:'donggodongnak',     hanja:'同苦同樂', korean:'동고동락', meaning:'괴로움도 즐거움도 함께 나누다',          emoji:'🌗', file:'047_donggodongnak.html' },
+  { id:'review2_3',         hanja:'★ 復習 ★', korean:'복습 코너', meaning:'지금까지 배운 다섯 사자성어를 모두 모아 복습해요!', emoji:'🏆', file:'048_review.html' },
+  { id:'dongsangimong',     hanja:'同床異夢', korean:'동상이몽', meaning:'겉으로는 같아도 속마음은 다르다',        emoji:'😴', file:'049_dongsangimong.html' },
+  { id:'orimujung',         hanja:'五里霧中', korean:'오리무중', meaning:'짙은 안개 속처럼 상황을 알 수 없다',      emoji:'🌫️', file:'050_orimujung.html' },
+  { id:'samyeonchoga',      hanja:'四面楚歌', korean:'사면초가', meaning:'사방이 적에 둘러싸여 도움받을 곳이 없다', emoji:'⚔️', file:'051_samyeonchoga.html' },
+  { id:'baeeunmangdeok',    hanja:'背恩忘德', korean:'배은망덕', meaning:'은혜를 잊고 도리어 배신하다',           emoji:'🙅‍♂️', file:'052_baeeunmangdeok.html' },
+  { id:'muyongjimul',       hanja:'無用之物', korean:'무용지물', meaning:'아무 쓸모가 없는 물건이나 일',           emoji:'🗑️', file:'053_muyongjimul.html' },
+  { id:'review2_4',         hanja:'★ 復習 ★', korean:'복습 코너', meaning:'지금까지 배운 다섯 사자성어를 모두 모아 복습해요!', emoji:'🏆', file:'054_review.html' },
+  { id:'gusailsaeng',       hanja:'九死一生', korean:'구사일생', meaning:'여러 번 죽을 고비를 넘기고 겨우 살아나다', emoji:'🏔️', file:'055_gusailsaeng.html' },
+  { id:'sokjeonsokgyeol',   hanja:'速戰速決', korean:'속전속결', meaning:'빠르게 시작해서 빠르게 끝내다',          emoji:'⚡', file:'056_sokjeonsokgyeol.html' },
+  { id:'maksangmakha',      hanja:'莫上莫下', korean:'막상막하', meaning:'서로 비슷해 우열을 가리기 어렵다',       emoji:'🥊', file:'057_maksangmakha.html' },
+  { id:'jeokbanhajang',     hanja:'賊反荷杖', korean:'적반하장', meaning:'잘못한 사람이 도리어 큰소리치다',        emoji:'😠', file:'058_jeokbanhajang.html' },
+  { id:'chiljeonpalgi',     hanja:'七顚八起', korean:'칠전팔기', meaning:'여러 번 실패해도 다시 일어나 노력하다',  emoji:'🔄', file:'059_chiljeonpalgi.html' },
+  { id:'review2_5',         hanja:'★ 復習 ★', korean:'복습 코너', meaning:'지금까지 배운 다섯 사자성어를 모두 모아 복습해요!', emoji:'🏆', file:'060_review.html' },
+];
+
+const gradeEmoji = { legendary:'🏆', diamond:'💎', gold:'🥇', silver:'🥈', bronze:'🥉' };
+const gradeLabel  = { legendary:'레전더리', diamond:'다이아', gold:'골드', silver:'실버', bronze:'브론즈' };
+
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('sajasungeo_progress')||'{}'); } catch(e){return{};}
+}
+function getUnlockedIdx() {
+  const p = getProgress(); let idx=0;
+  for(let i=0;i<stages.length;i++){
+    if(p[stages[i].id]) idx=i+1; else break;
+  }
+  return Math.min(idx, stages.length-1);
+}
+
+function renderLevel() {
+  let total=0;
+  try{total=parseInt(localStorage.getItem('hanjaCards')||'0');}catch(e){}
+  const levels=[
+    {name:'새싹 학자 Lv.1',icon:'🌱',max:20},
+    {name:'견습 학자 Lv.2',icon:'📖',max:50},
+    {name:'어휘 탐험가 Lv.3',icon:'🗺️',max:80},
+    {name:'한자 수집가 Lv.4',icon:'🏅',max:100},
+    {name:'사자성어 마스터 Lv.5',icon:'👑',max:999},
+  ];
+  let li=0,pm=0;
+  for(let i=0;i<levels.length;i++){
+    if(total<=levels[i].max){li=i;break;}
+    pm=levels[i].max; if(i===levels.length-1)li=i;
+  }
+  const lv=levels[li];
+  const pct=Math.min(100,Math.round(((total-pm)/(lv.max-pm))*100));
+  document.getElementById('lvIcon').textContent=lv.icon;
+  document.getElementById('lvName').textContent=lv.name;
+  document.getElementById('lvCards').textContent=`한자 카드 ${total} / ${lv.max}장`;
+  setTimeout(()=>{document.getElementById('lvBar').style.width=pct+'%';},400);
+}
+
+function renderMap() {
+  const prog=getProgress();
+  const unlockedIdx=getUnlockedIdx();
+  const wrap=document.getElementById('mapWrap');
+  wrap.innerHTML='';
+
+  const doneCount = stages.filter(s=>!!prog[s.id]).length;
+  const remaining = stages.length - doneCount;
+  const goalEl = document.getElementById('castleGoal');
+  document.getElementById('goalSub').innerHTML =
+    remaining<=0
+      ? '🎉 사자성어 왕국을 완전히 정복했어요!<br>정말 대단해요, 최고의 정복자! 👑✨'
+      : `앞으로 ${remaining}단계 남았어요!`;
+
+  if (remaining<=0) {
+    goalEl.classList.add('complete');
+    spawnConfetti(goalEl);
+  } else {
+    goalEl.classList.remove('complete');
+  }
+
+  // 베이스캠프(첫 스테이지)가 맨 아래, 성(마지막 스테이지)이 맨 위에 오도록 역순으로 그림
+  for (let i = stages.length - 1; i >= 0; i--) {
+    const s = stages[i];
+    const isDone    = !!prog[s.id];
+    const isCurrent = !isDone && i===unlockedIdx;
+    const isLocked  = !isDone && i>unlockedIdx;
+    const grade     = prog[s.id]?.grade;
+
+    const stateClass = isDone?'done':isCurrent?'current':'locked';
+    const textClass  = isDone?'done-text':isCurrent?'current-text':'locked-text';
+    const infoClass  = isDone?'done-info':isCurrent?'current-info':'locked-info';
+    const rowClass   = i%2===0?'':'right';
+
+    const stamp   = isDone&&grade?`<div class="node-stamp">${gradeEmoji[grade]}</div>`:'';
+    const gradeRow= isDone&&grade?`<div class="grade-row">${gradeEmoji[grade]} <span>${gradeLabel[grade]}</span></div>`:'';
+    const tapHint = isCurrent?`<div class="tap-hint">▶ 지금 정복!</div>`:'';
+    const meaning = isLocked?'🔒 ???':s.meaning;
+
+    const row=document.createElement('div');
+    row.className=`stage-row ${rowClass}`;
+    row.style.animationDelay=((stages.length-1-i)*0.07)+'s';
+    row.innerHTML=`
+      <button class="node-btn ${stateClass}" onclick="${!isLocked?`goStage('${s.file}')`:''}" >
+        ${stamp}
+        <div class="node-emoji">${isLocked?'🔒':s.emoji}</div>
+        <div class="node-num">${i+1}</div>
+      </button>
+      <div class="node-info ${infoClass}">
+        <div class="info-hanja  ${textClass}">${s.hanja}</div>
+        <div class="info-korean ${textClass}">${s.korean}</div>
+        <div class="info-meaning ${textClass}">${meaning}</div>
+        ${gradeRow}${tapHint}
+      </div>`;
+    wrap.appendChild(row);
+
+    if (i>0) {
+      // 이전 단계(i-1, 더 아래쪽)까지 완료했다면 이 구간은 이미 지나온 길
+      const segmentDone = !!prog[stages[i-1].id];
+      const lineClass = segmentDone?'done-line':'future-line';
+      const conn=document.createElement('div');
+      conn.className=`path-line ${lineClass}`;
+      conn.innerHTML=`<div class="path-arrow">⬆</div>`;
+      wrap.appendChild(conn);
+    }
+  }
+}
+
+function goStage(file){ window.location.href=file; }
+
+const confettiEmojis = ['🎉','🎊','✨','👑','⭐','🏆'];
+let confettiSpawned = false;
+function spawnConfetti(container){
+  if (confettiSpawned) return; // 중복 렌더링 시 계속 새로 터지지 않도록
+  confettiSpawned = true;
+  const burst = document.createElement('div');
+  burst.className = 'confetti-burst';
+  const pieceCount = 18;
+  for (let i=0; i<pieceCount; i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.textContent = confettiEmojis[Math.floor(Math.random()*confettiEmojis.length)];
+    const angle = (Math.PI*2*i/pieceCount) + (Math.random()*0.5-0.25);
+    const dist = 90 + Math.random()*70;
+    const dx = Math.cos(angle)*dist;
+    const dy = Math.sin(angle)*dist - 20;
+    piece.style.setProperty('--dx', dx+'px');
+    piece.style.setProperty('--dy', dy+'px');
+    piece.style.setProperty('--rot', (Math.random()*360-180)+'deg');
+    piece.style.setProperty('--delay', (Math.random()*0.3)+'s');
+    burst.appendChild(piece);
+  }
+  container.appendChild(burst);
+  // 애니메이션이 끝나면 정리하고, 잠시 후 다시 한 번 터뜨려서 계속 축하 분위기 유지
+  setTimeout(() => {
+    burst.remove();
+    confettiSpawned = false;
+    if (document.getElementById('castleGoal').classList.contains('complete')) {
+      spawnConfetti(document.getElementById('castleGoal'));
+    }
+  }, 4000);
+}
+
+function checkNewUnlock(){
+  const nu=sessionStorage.getItem('newUnlock');
+  if(!nu)return;
+  sessionStorage.removeItem('newUnlock');
+  const idx=parseInt(nu);
+  if(idx<stages.length){
+    document.getElementById('popupTitle').textContent=stages[idx].korean+' 진지 발견! 🎉';
+    document.getElementById('popupDesc').textContent=
+      `${stages[idx-1]?.korean}을(를) 정복했어요!\n\n이제 ${stages[idx].emoji} ${stages[idx].korean}에 도전할 수 있어요!`;
+    document.getElementById('popup').classList.add('show');
+  }
+}
+function closePopup(){ document.getElementById('popup').classList.remove('show'); }
+
+renderLevel();
+renderMap();
+checkNewUnlock();
+
+// 처음 열었을 때 맨 아래(베이스캠프)에서 시작하도록 스크롤
+window.scrollTo(0, document.body.scrollHeight);
+setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 50);
+setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 200);
+</script>
+</body>
+</html>
