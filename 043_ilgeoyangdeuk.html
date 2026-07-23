@@ -941,6 +941,118 @@
     background: var(--border);
     margin: 16px 0;
   }
+  /* ── 📖 한자 상식 카드 ── */
+  .hanja-trivia {
+    background: linear-gradient(135deg, #FFF8E8, #FFF0D0);
+    border: 1.5px dashed #E8A020;
+    border-radius: 14px;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── 한자 상식: 닫힘(안내문구) 영역 ── */
+  .trivia-prompt {
+    padding: 16px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+  }
+  .trivia-prompt:active { background: rgba(232,160,32,0.12); }
+  .trivia-prompt-icon { font-size: 22px; flex-shrink: 0; }
+  .trivia-prompt-text {
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .trivia-prompt-text b { color: #8A6500; }
+  .trivia-prompt-cta {
+    font-size: 12px;
+    font-weight: 900;
+    color: #8A6500;
+    background: white;
+    border: 1.5px solid #E8A020;
+    border-radius: 20px;
+    padding: 6px 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    animation: ctaPulse 1.6s infinite;
+  }
+  @keyframes ctaPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+
+  /* ── 한자 상식: 펼침(실제 내용) 영역 ── */
+  .trivia-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .hanja-trivia.expanded .trivia-content {
+    max-height: 520px;
+  }
+  .hanja-trivia.expanded .trivia-prompt {
+    display: none;
+  }
+  .trivia-content-inner {
+    padding: 4px 18px 16px;
+    cursor: pointer;
+    position: relative;
+  }
+  .hanja-trivia-title {
+    font-size: 12px;
+    font-weight: 900;
+    color: #8A6500;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hanja-trivia-meaning {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hanja-trivia-meaning b { color: #8A6500; }
+  .hanja-trivia-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .hanja-trivia-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .hanja-trivia-word {
+    background: white;
+    border: 1.5px solid #F0D090;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #8A6500;
+  }
+  .note-speak-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  .trivia-content-inner.speaking .note-speak-icon { opacity: 1; animation: noteSpeakPulse 0.8s infinite; }
+  @keyframes noteSpeakPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
 </style>
 </head>
 <body>
@@ -1279,14 +1391,28 @@
       <div class="ext-header">
         <span class="ext-hanja">得</span>
         <span class="ext-eq">득 = <b>얻다</b></span>
-        <span class="ext-badge" id="extBadge3"></span>
+        <span class="ext-badge done" id="extBadge3">완료 ✓</span>
       </div>
-      <div style="font-size:13px; color:var(--muted); margin-bottom:10px;">다음 중 得(득)이 <b>"얻다"</b> 뜻으로 쓰인 단어를 모두 고르세요.</div>
-      <div class="ext-options">
-        <div class="ext-opt" id="eo3-0" onclick="pickExt(3,0,true,'소득의 뜻은 얻은 바라는 뜻으로, 득(得)은 여기서 얻다라는 뜻이에요!')">소득</div>
-        <div class="ext-opt" id="eo3-1" onclick="pickExt(3,1,false,'독서의 독은 읽을 독(讀)이에요. 소리도 다르고 얻을 득(得)이 아니에요!')">독서</div>
-        <div class="ext-opt" id="eo3-2" onclick="pickExt(3,2,false,'독립의 독은 홀로 독(獨)이에요. 소리도 다르고 얻을 득(得)이 아니에요!')">독립</div>
-        <div class="ext-opt" id="eo3-3" onclick="pickExt(3,3,true,'이득의 뜻은 이로운 것을 얻는다는 뜻으로, 득(得)은 여기서도 얻다라는 뜻이에요!')">이득</div>
+      <div class="hanja-trivia" id="trivia1">
+        <div class="trivia-prompt" onclick="toggleTrivia('trivia1')">
+          <span class="trivia-prompt-icon">📖</span>
+          <span class="trivia-prompt-text">이번 한자는 <b>'득'이라고 읽는 다른 한자가 거의 없어요!</b> 헷갈릴 일이 없으니, 퀴즈 대신 한자 상식으로 알아볼게요.</span>
+          <span class="trivia-prompt-cta">눌러보기</span>
+        </div>
+        <div class="trivia-content">
+          <div class="trivia-content-inner" onclick="speakNote(this)">
+            <div class="hanja-trivia-title">📖 한자 상식</div>
+            <div class="hanja-trivia-meaning">得(득) — 뜻: <b>얻다</b></div>
+            <div class="hanja-trivia-desc">💡 '득'으로 소리 나는 한자는 得 하나뿐이라, 헷갈릴 짝이 없어요. 일거양득·소득·이득·득점의 '득'이 모두 같은 得이랍니다. 대신 <b>모양이 닮은 德(덕)</b>과는 헷갈리기 쉬워요. 得은 '얻다', 德은 '베푸는 마음'이라 뜻이 전혀 다르지요. 옛날 중국에서는 두 글자의 소리가 거의 같았는데, 우리말로 들어오면서 '득'과 '덕'으로 갈라졌답니다.</div>
+            <div class="hanja-trivia-words">
+              <span class="hanja-trivia-word">소득</span>
+              <span class="hanja-trivia-word">이득</span>
+              <span class="hanja-trivia-word">득점</span>
+              <span class="hanja-trivia-word">취득</span>
+            </div>
+            <span class="note-speak-icon">🔊</span>
+          </div>
+        </div>
       </div>
       <div class="ext-feedback" id="ef3"></div>
     </div>
@@ -1799,11 +1925,11 @@ const extCorrect = [
   [1, 2],       // 一: 일치, 통일
   [0, 2],       // 擧: 거수, 선거
   [1, 3],       // 兩: 양쪽, 양측
-  [0, 3]        // 得: 소득, 이득
+  []            // 得: 한자 상식, 퀴즈 없음
 ];
 const extSelected = [[], [], [], []];
-const extDone = [false, false, false, false];
-let extDoneCount = 0;
+const extDone = [false, false, false, true]; // 得(3)만 한자 상식
+let extDoneCount = 1;
 
 // ── 5단계 피드백 누적 표시 (지워지지 않고 차곡차곡 쌓임) ──
 function addFeedbackLine(secIdx, text, type) {
@@ -2178,7 +2304,59 @@ async function toggleTTS() {
   speakNext();
 }
 
+function toggleTrivia(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.add('expanded');
+  // 펼치자마자 바로 읽어주기 (카드를 다시 누르면 다시 읽어줘요)
+  const inner = card.querySelector('.trivia-content-inner');
+  if (inner) speakNote(inner);
+}
+
+// ── 한자 상식 카드 읽어주기 ──
+async function speakNote(el) {
+  if (!window.speechSynthesis) return;
+
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.trivia-content-inner.speaking, .ext-special-note.speaking, .hanja-trivia.speaking')
+    .forEach(n => n.classList.remove('speaking'));
+
+  const clone = el.cloneNode(true);
+  const iconEl = clone.querySelector('.note-speak-icon');
+  if (iconEl) iconEl.remove();
+  let text = clone.textContent.replace(/\s+/g, ' ').trim();
+  // 이모지 제거 (📖, 💡 등 음성으로 안 읽도록)
+  text = text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').replace(/\s+/g, ' ').trim();
+
+  el.classList.add('speaking');
+
+  let voices = window.speechSynthesis.getVoices();
+  if (voices.length === 0) {
+    await new Promise(resolve => {
+      window.speechSynthesis.onvoiceschanged = () => resolve();
+      setTimeout(resolve, 300);
+    });
+    voices = window.speechSynthesis.getVoices();
+  }
+  const koVoices = voices.filter(v => /ko|kr/i.test(v.lang));
+  const narrVoice = koVoices.find(v => /female|yuna|sora|미|여|나|지윤/i.test(v.name)) || koVoices[0] || null;
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ko-KR';
+  utter.rate = 0.92;
+  utter.pitch = 1.05;
+  if (narrVoice) utter.voice = narrVoice;
+  utter.onend = () => el.classList.remove('speaking');
+  utter.onerror = () => el.classList.remove('speaking');
+
+  window.speechSynthesis.speak(utter);
+}
+
 function stopTTS() {
+  // 한자 상식 낭독(speakNote)도 함께 중지
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  document.querySelectorAll('.trivia-content-inner.speaking, .ext-special-note.speaking, .hanja-trivia.speaking')
+    .forEach(el => el.classList.remove('speaking'));
   if (ttsPlaying) {
     window.speechSynthesis.cancel();
     ttsPlaying = false;
