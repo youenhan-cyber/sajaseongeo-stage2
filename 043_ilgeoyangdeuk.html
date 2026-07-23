@@ -891,6 +891,7 @@
     display: none;
   }
   .p1-result.show { display: block; }
+  .p1-result.miss { color: var(--muted); }
 
   /* ── 페이지 5: 어휘 확장 ── */
   .ext-section { padding: 4px 0 8px; }
@@ -1843,18 +1844,29 @@ function emptySlot(slot) {
   slot.appendChild(numSpan);
   slot.classList.remove('filled');
   document.getElementById('p1Result').classList.remove('show');
+  document.getElementById('p1Result').classList.remove('miss');
   document.getElementById('btn1').disabled = true;
 }
 
 function checkP1() {
   // 위치별 글자만 맞으면 정답 처리 (往처럼 똑같이 생긴 타일이 두 개일 땐 어느 쪽을 넣어도 인정)
   const correct = slots.every((tileId, i) => tileId && document.getElementById(tileId).dataset.char === answer[i]);
+  const p1r = document.getElementById('p1Result');
+  if (!p1r.dataset.okText) p1r.dataset.okText = p1r.textContent;
+  const p1Filled = slots.every(x => x);
   if (correct) {
-    document.getElementById('p1Result').classList.add('show');
+    p1r.textContent = p1r.dataset.okText;
+    p1r.classList.remove('miss');
+    p1r.classList.add('show');
     document.getElementById('btn1').disabled = false;
     earnedScore += 10; totalScore += 10;
+  } else if (p1Filled) {
+    p1r.textContent = '\ud83e\udd14 \uc21c\uc11c\ub97c \ub2e4\uc2dc \uc0b4\ud3b4\ubcf4\uc138\uc694!';
+    p1r.classList.add('miss');
+    p1r.classList.add('show');
   } else {
-    totalScore += 0;
+    p1r.classList.remove('show');
+    p1r.classList.remove('miss');
   }
 }
 
