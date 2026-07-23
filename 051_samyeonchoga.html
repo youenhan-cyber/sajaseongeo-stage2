@@ -1073,8 +1073,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">사면초가의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
-      <div class="fq-option" onclick="pickFinal(this, false)">사방에서 도움을 받아 아주 든든한 상황이라는 뜻</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">사방이 적으로 둘러싸여 아무런 도움도 받을 수 없는 위급한 상황이라는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, false)">사방에서 도움을 받아 든든한 상황이라는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">사방이 적에게 둘러싸여 위급하다는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1112,18 +1112,18 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>유방은 항우의 군대를 약하게 만들기 위해 어떤 계를 냈나요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(0, this, false)">군사 수를 늘렸다</div>
-          <div class="comp-option" onclick="pickComp(0, this, true)">초나라 노래를 부르게 해 마음을 흔들었다</div>
-          <div class="comp-option" onclick="pickComp(0, this, false)">항우에게 편지를 보냈다</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">군사 수를 크게 늘렸다</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">초나라 노래를 부르게 했다</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">항우에게 편지를 써서 보냈다</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">2</span>이 이야기에서 사면초가가 뜻하는 것은 무엇인가요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(1, this, true)">사방이 적으로 둘러싸여 도움을 받을 수 없는 상황</div>
+          <div class="comp-option" onclick="pickComp(1, this, true)">사방이 적에게 둘러싸인 상황</div>
           <div class="comp-option" onclick="pickComp(1, this, false)">사방에서 도움을 받는 든든한 상황</div>
-          <div class="comp-option" onclick="pickComp(1, this, false)">혼자 여행을 떠나는 상황</div>
+          <div class="comp-option" onclick="pickComp(1, this, false)">혼자 조용히 여행을 떠나는 상황</div>
         </div>
         <div class="feedback-msg" id="fb1"></div>
       </div>
@@ -1162,9 +1162,9 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">사면초가의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
-      <div class="cq-option" onclick="pickConfirm(this, false)">사방에서 도움을 받아 든든한 상황</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">사방이 적으로 둘러싸여 도움을 받을 수 없는 상황</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">혼자 여행을 즐기는 상황</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">사방에서 도움을 받는 든든한 상황</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">사방이 적에게 둘러싸인 상황</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">혼자 조용히 여행을 즐기는 상황</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2216,7 +2216,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "사방이 적으로 둘러싸여 도움을 받을 수 없는 상황"이에요!';
+    msg.textContent = '💡 정답은 "사방이 적에게 둘러싸인 상황"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

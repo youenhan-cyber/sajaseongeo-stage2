@@ -1074,7 +1074,7 @@
     <div class="fq-q">자포자기의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
       <div class="fq-option" onclick="pickFinal(this, false)">어려움 속에서도 포기하지 않고 노력하는 모습</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">스스로를 포기하고 아무렇게나 해 버리는 마음가짐</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">스스로를 포기하고 아무렇게나 구는 모습</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1113,7 +1113,7 @@
         <div class="comp-q"><span class="comp-num">1</span>맹자가 말한 '자포(自暴)'는 어떤 태도인가요?</div>
         <div class="comp-options">
           <div class="comp-option" onclick="pickComp(0, this, false)">다른 사람을 함부로 대하는 태도</div>
-          <div class="comp-option" onclick="pickComp(0, this, true)">스스로를 낮게 보고 함부로 여기는 태도</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">스스로를 함부로 여기는 태도</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">다른 사람의 조언을 잘 듣는 태도</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
@@ -1121,9 +1121,9 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">2</span>이 이야기에서 자포자기가 뜻하는 것은 무엇인가요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(1, this, true)">스스로를 포기하고 아무렇게나 해 버리는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, true)">스스로를 포기하고 마구 구는 것</div>
           <div class="comp-option" onclick="pickComp(1, this, false)">어려움을 극복하기 위해 노력하는 것</div>
-          <div class="comp-option" onclick="pickComp(1, this, false)">다른 사람과 힘을 합쳐 문제를 해결하는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, false)">다른 사람과 힘을 합쳐 해결하는 것</div>
         </div>
         <div class="feedback-msg" id="fb1"></div>
       </div>
@@ -1163,7 +1163,7 @@
     <div style="font-size:15px; font-weight:700; line-height:1.6;">자포자기의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
       <div class="cq-option" onclick="pickConfirm(this, false)">끝까지 포기하지 않고 도전하는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">스스로를 포기하고 아무렇게나 해 버리는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">스스로를 포기하고 마구 구는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">다른 사람을 존중하며 돕는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
@@ -2219,7 +2219,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "스스로를 포기하고 아무렇게나 해 버리는 것"이에요!';
+    msg.textContent = '💡 정답은 "스스로를 포기하고 마구 구는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

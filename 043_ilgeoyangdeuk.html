@@ -1217,8 +1217,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">일거양득의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
+      <div class="fq-option" onclick="pickFinal(this, true)">한 가지 일로 두 가지를 얻는 모습</div>
       <div class="fq-option" onclick="pickFinal(this, false)">한 가지 일을 해도 아무 이득이 없는 모습</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">한 가지 일을 하여 두 가지 이득을 얻는 모습</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1289,7 +1289,6 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>곁에 있던 사람은 변장자에게 무엇이라고 했나요?</div>
         <div class="comp-options">
-          
           <div class="comp-option" onclick="pickComp(0, this, false)">지금 바로 달려들라고 했다</div>
           <div class="comp-option" onclick="pickComp(0, this, true)">잠깐 기다려 보라고 했다</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">그냥 돌아가자고 말렸다</div>
@@ -1342,8 +1341,8 @@
     <div style="font-size:15px; font-weight:700; line-height:1.6;">일거양득의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
       <div class="cq-option" onclick="pickConfirm(this, false)">한 가지 일도 제대로 못 끝내는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">한 가지 일을 하여 두 가지 이득을 얻는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">이득 없이 힘만 드는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">한 가지 일로 두 가지를 얻는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">아무 이득 없이 힘만 드는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2460,7 +2459,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "한 가지 일을 하여 두 가지 이득을 얻는 것"이에요!';
+    msg.textContent = '💡 정답은 "한 가지 일로 두 가지를 얻는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

@@ -1106,8 +1106,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">우왕좌왕의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
+      <div class="fq-option" onclick="pickFinal(this, true)">갈피를 못 잡고 이리저리 헤매는 모습</div>
       <div class="fq-option" onclick="pickFinal(this, false)">한 가지 일에 집중해서 끝까지 해내는 모습</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">이리저리 왔다 갔다 하며 갈피를 못 잡는 모습</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1178,10 +1178,8 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>마을 사람들이 불을 빨리 끄지 못한 까닭은 무엇인가요?</div>
         <div class="comp-options">
-          
-          
-          <div class="comp-option" onclick="pickComp(0, this, true)">서로 반대쪽으로 몰려가서</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">물동이를 하나도 못 구해서</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">서로 반대쪽으로 몰려가서</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">불이 너무 작았기 때문에</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
@@ -1233,7 +1231,7 @@
     <div style="font-size:15px; font-weight:700; line-height:1.6;">우왕좌왕의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
       <div class="cq-option" onclick="pickConfirm(this, false)">계획대로 착착 진행되는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">갈피를 못 잡고 이리저리 헤매는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">갈피를 못 잡고 헤매는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">힘을 모아 함께 이겨내는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
@@ -2286,7 +2284,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "물건을 보면 갖고 싶은 마음이 생긴다"예요!';
+    msg.textContent = '💡 정답은 "갈피를 못 잡고 헤매는 것"예요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

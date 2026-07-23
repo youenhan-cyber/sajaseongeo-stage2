@@ -1105,8 +1105,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">일편단심의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
-      <div class="fq-option" onclick="pickFinal(this, false)">여러 사람에게 마음이 이리저리 흔들리는 모습</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">조금도 변하지 않는 한결같은 마음을 지키는 모습</div>
+      <div class="fq-option" onclick="pickFinal(this, false)">여러 사람에게 마음이 자꾸 흔들리는 모습</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">조금도 변하지 않는 한결같은 마음</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1177,10 +1177,9 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>정몽주는 이방원의 노래에 어떻게 답했나요?</div>
         <div class="comp-options">
-          
           <div class="comp-option" onclick="pickComp(0, this, false)">말없이 자리에서 일어났다</div>
-          <div class="comp-option" onclick="pickComp(0, this, false)">그 자리에서 크게 화를 냈다</div>
           <div class="comp-option" onclick="pickComp(0, this, true)">노래로 마음을 밝혔다</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">그 자리에서 크게 화를 냈다</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
@@ -1229,8 +1228,8 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">일편단심의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
-      <div class="cq-option" onclick="pickConfirm(this, false)">상황에 따라 마음이 자주 바뀌는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">조금도 변하지 않는 한결같은 마음을 지키는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">상황에 따라 마음이 바뀌는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">변하지 않는 한결같은 마음</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">여러 사람에게 골고루 잘하는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
@@ -2282,7 +2281,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "조금도 변하지 않는 한결같은 마음을 지키는 것"이에요!';
+    msg.textContent = '💡 정답은 "변하지 않는 한결같은 마음"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

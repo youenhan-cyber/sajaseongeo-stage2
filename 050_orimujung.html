@@ -1073,8 +1073,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">오리무중의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
+      <div class="fq-option" onclick="pickFinal(this, true)">안개 속처럼 전혀 알 수 없다는 뜻</div>
       <div class="fq-option" onclick="pickFinal(this, false)">안개가 걷히듯 모든 것이 분명해진다는 뜻</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">짙은 안개 속처럼 상황이나 행방을 전혀 알 수 없다는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1112,18 +1112,18 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>장해는 왜 5리나 되는 안개를 만들었나요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(0, this, false)">사람들에게 도술을 자랑하려고</div>
-          <div class="comp-option" onclick="pickComp(0, this, true)">사람들을 피해 조용히 연구하고 싶어서</div>
-          <div class="comp-option" onclick="pickComp(0, this, false)">길을 아름답게 꾸미려고</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">사람들을 피해 연구하고 싶어서</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">사람들에게 도술을 널리 자랑하려고</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">길을 아름답게 꾸며 보려고</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">2</span>이 이야기에서 오리무중이 뜻하는 것은 무엇인가요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(1, this, true)">상황이나 행방을 전혀 알 수 없는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, true)">행방을 전혀 알 수 없는 것</div>
           <div class="comp-option" onclick="pickComp(1, this, false)">모든 것이 분명하게 보이는 것</div>
-          <div class="comp-option" onclick="pickComp(1, this, false)">길을 아주 잘 아는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, false)">길을 아주 잘 알고 있는 것</div>
         </div>
         <div class="feedback-msg" id="fb1"></div>
       </div>
@@ -1162,9 +1162,9 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">오리무중의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
+      <div class="cq-option" onclick="pickConfirm(this, true)">행방을 전혀 알 수 없는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">모든 것이 분명하게 보이는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">상황이나 행방을 전혀 알 수 없는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">길을 잘 아는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">길을 잘 알고 찾아가는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2214,7 +2214,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "상황이나 행방을 전혀 알 수 없는 것"이에요!';
+    msg.textContent = '💡 정답은 "행방을 전혀 알 수 없는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

@@ -1116,7 +1116,7 @@
     <div class="fq-q">설상가상의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
       <div class="fq-option" onclick="pickFinal(this, false)">어려운 일이 지나고 좋은 일만 남는다</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">이미 어려운 상황에 더 큰 어려움이 겹친다</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">어려운 일에 어려움이 더 겹친다</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1187,7 +1187,6 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>나무꾼에게 눈이 내린 뒤에 또 무슨 일이 있었나요?</div>
         <div class="comp-options">
-          
           <div class="comp-option" onclick="pickComp(0, this, false)">해가 나서 눈이 모두 녹았다</div>
           <div class="comp-option" onclick="pickComp(0, this, true)">서리가 내려 길이 얼었다</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">바람이 멎고 날이 개었다</div>
@@ -1239,9 +1238,9 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">설상가상의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
-      <div class="cq-option" onclick="pickConfirm(this, true)">어려운 일에 더 큰 어려움이 겹치는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">나쁜 일이 지나가고 좋은 일만 남는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">아무 걱정 없이 편안한 상태</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">나쁜 일이 지나고 좋은 일이 오는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">어려운 일에 어려움이 겹치는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">아무 걱정 없이 편안히 지내는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2297,7 +2296,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "물건을 보면 갖고 싶은 마음이 생긴다"예요!';
+    msg.textContent = '💡 정답은 "어려운 일에 어려움이 겹치는 것"예요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

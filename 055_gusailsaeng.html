@@ -1074,7 +1074,7 @@
     <div class="fq-q">구사일생의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
       <div class="fq-option" onclick="pickFinal(this, false)">위험한 일을 미리 피해서 안전하게 지낸다는 뜻</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">아홉 번 죽을 고비를 넘기고 간신히 살아남았다는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">죽을 고비를 넘기고 간신히 살아났다는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1113,8 +1113,8 @@
         <div class="comp-q"><span class="comp-num">1</span>굴원이 이소에 쓴 '아홉 번 죽어도 후회하지 않겠다'는 말은 원래 무슨 뜻이었나요?</div>
         <div class="comp-options">
           <div class="comp-option" onclick="pickComp(0, this, false)">실제로 아홉 번 죽을 뻔했다는 뜻</div>
-          <div class="comp-option" onclick="pickComp(0, this, true)">죽음도 두렵지 않다는 굳은 각오를 나타낸 뜻</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">오래 살고 싶다는 소망을 나타낸 뜻</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">죽음도 두렵지 않다는 굳은 각오</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
@@ -1122,7 +1122,7 @@
         <div class="comp-q"><span class="comp-num">2</span>오늘날 구사일생이 뜻하는 것은 무엇인가요?</div>
         <div class="comp-options">
           <div class="comp-option" onclick="pickComp(1, this, false)">위험을 미리 피해 안전하게 지내는 것</div>
-          <div class="comp-option" onclick="pickComp(1, this, true)">큰 위기를 넘기고 간신히 살아남는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, true)">큰 위기를 넘기고 살아남는 것</div>
           <div class="comp-option" onclick="pickComp(1, this, false)">죽음을 두려워하지 않고 맞서는 것</div>
         </div>
         <div class="feedback-msg" id="fb1"></div>
@@ -1162,9 +1162,9 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">구사일생의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
-      <div class="cq-option" onclick="pickConfirm(this, false)">위험한 일을 미리 피해서 안전하게 지내는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">아홉 번 죽을 고비를 넘기고 간신히 살아남는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, false)">죽음을 두려워하지 않고 용감하게 맞서는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">위험을 미리 피해 안전하게 지내는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">죽음을 두려워하지 않고 맞서는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">죽을 고비를 넘기고 살아남는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2210,7 +2210,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "아홉 번 죽을 고비를 넘기고 간신히 살아남는 것"이에요!';
+    msg.textContent = '💡 정답은 "죽을 고비를 넘기고 살아남는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

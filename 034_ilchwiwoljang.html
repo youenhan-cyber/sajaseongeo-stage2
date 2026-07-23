@@ -1074,7 +1074,7 @@
     <div class="fq-q">일취월장의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
       <div class="fq-option" onclick="pickFinal(this, false)">한 번에 몰아서 급하게 해내는 모습</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">꾸준히 노력하면 실력이 날마다 좋아지는 모습</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">꾸준히 노력해 실력이 느는 모습</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1112,7 +1112,7 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>스승은 소년에게 무엇을 가르쳐 주었나요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(0, this, true)">매일 조금씩이라도 꾸준히 노력하라는 것</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">매일 꾸준히 노력하라는 것</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">한 번에 몰아서 공부하라는 것</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">포기하고 다른 일을 찾으라는 것</div>
         </div>
@@ -1121,8 +1121,8 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">2</span>이 이야기에서 일취월장이 뜻하는 것은 무엇인가요?</div>
         <div class="comp-options">
-          <div class="comp-option" onclick="pickComp(1, this, true)">꾸준한 노력으로 실력이 날마다 좋아지는 것</div>
-          <div class="comp-option" onclick="pickComp(1, this, false)">하루 만에 실력이 완전히 바뀌는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, true)">실력이 날마다 좋아지는 것</div>
+          <div class="comp-option" onclick="pickComp(1, this, false)">하루 만에 실력이 바뀌는 것</div>
           <div class="comp-option" onclick="pickComp(1, this, false)">노력 없이 운으로 성공하는 것</div>
         </div>
         <div class="feedback-msg" id="fb1"></div>
@@ -1162,8 +1162,8 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">일취월장의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
-      <div class="cq-option" onclick="pickConfirm(this, false)">운이 좋아서 한 번에 성공하는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">꾸준한 노력으로 실력이 날마다 좋아지는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">실력이 날마다 좋아지는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, false)">운이 좋아 한 번에 성공하는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">노력해도 실력이 늘지 않는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
@@ -2215,7 +2215,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "꾸준한 노력으로 실력이 날마다 좋아지는 것"이에요!';
+    msg.textContent = '💡 정답은 "실력이 날마다 좋아지는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

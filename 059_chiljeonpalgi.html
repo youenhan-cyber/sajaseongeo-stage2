@@ -1105,8 +1105,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">칠전팔기의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
-      <div class="fq-option" onclick="pickFinal(this, false)">한 번 실패하면 바로 포기한다는 뜻</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">여러 번 실패해도 포기하지 않고 노력하여 성공한다는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">넘어져도 다시 일어선다는 뜻</div>
+      <div class="fq-option" onclick="pickFinal(this, false)">한 번 지면 바로 포기한다는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1177,7 +1177,6 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>젊은이는 몇 번째에 돌을 들어 올렸나요?</div>
         <div class="comp-options">
-          
           <div class="comp-option" onclick="pickComp(0, this, false)">첫 번째에 바로 들어 올렸다</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">일곱 번째에 들어 올렸다</div>
           <div class="comp-option" onclick="pickComp(0, this, true)">여덟 번째에 들어 올렸다</div>
@@ -1230,8 +1229,8 @@
     <div style="font-size:15px; font-weight:700; line-height:1.6;">칠전팔기의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
       <div class="cq-option" onclick="pickConfirm(this, false)">한 번 실패하면 바로 포기하는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">여러 번 실패해도 포기하지 않고 노력하여 성공하는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">처음부터 도전하지 않는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">넘어져도 다시 일어서는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2282,7 +2281,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "여러 번 실패해도 포기하지 않고 노력하여 성공하는 것"이에요!';
+    msg.textContent = '💡 정답은 "넘어져도 다시 일어서는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

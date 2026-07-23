@@ -1105,8 +1105,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">막상막하의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
+      <div class="fq-option" onclick="pickFinal(this, true)">실력이 비슷해 우열을 가릴 수 없다는 뜻</div>
       <div class="fq-option" onclick="pickFinal(this, false)">한쪽이 크게 앞서서 승부가 뻔한 상황이라는 뜻</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">서로의 세력이 비슷하여 우열을 가리기 어려운 상황이라는 뜻</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1177,9 +1177,8 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>해가 기울도록 씨름은 어떻게 되었나요?</div>
         <div class="comp-options">
-          
-          <div class="comp-option" onclick="pickComp(0, this, false)">한 사람이 큰 차이로 이겼다</div>
           <div class="comp-option" onclick="pickComp(0, this, true)">좀처럼 승부가 나지 않았다</div>
+          <div class="comp-option" onclick="pickComp(0, this, false)">한 사람이 큰 차이로 이겼다</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">둘 다 그만두고 돌아갔다</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
@@ -1229,8 +1228,8 @@
     <div class="cq-label">✅ 다시 확인해요</div>
     <div style="font-size:15px; font-weight:700; line-height:1.6;">막상막하의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
+      <div class="cq-option" onclick="pickConfirm(this, true)">서로 비슷해 우열을 못 가리는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">한쪽이 크게 앞서서 승부가 뻔한 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">서로 비슷하여 우열을 가리기 어려운 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">싸우지 않고 바로 포기하는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
@@ -2282,7 +2281,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "서로 비슷하여 우열을 가리기 어려운 것"이에요!';
+    msg.textContent = '💡 정답은 "서로 비슷해 우열을 못 가리는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }

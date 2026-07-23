@@ -1105,8 +1105,8 @@
     <div class="fq-label">⭐ 전체 뜻은?</div>
     <div class="fq-q">일심동체의 올바른 뜻을 고르세요.</div>
     <div class="fq-options">
-      <div class="fq-option" onclick="pickFinal(this, false)">각자 따로따로 행동하는 모습</div>
-      <div class="fq-option" onclick="pickFinal(this, true)">마음과 몸이 하나가 되어 힘을 합치는 모습</div>
+      <div class="fq-option" onclick="pickFinal(this, true)">마음과 몸이 하나가 되는 모습</div>
+      <div class="fq-option" onclick="pickFinal(this, false)">각자 따로따로 흩어져 행동하는 모습</div>
     </div>
     <div class="result-msg" id="fqResult"></div>
   </div>
@@ -1177,11 +1177,9 @@
       <div class="comp-item">
         <div class="comp-q"><span class="comp-num">1</span>지친 친구를 보고 나머지 둘은 어떻게 했나요?</div>
         <div class="comp-options">
-          
-          
           <div class="comp-option" onclick="pickComp(0, this, false)">혼자 쉬라고 두고 갔다</div>
-          <div class="comp-option" onclick="pickComp(0, this, true)">양쪽에서 받쳐 주었다</div>
           <div class="comp-option" onclick="pickComp(0, this, false)">더 무거운 짐을 맡겼다</div>
+          <div class="comp-option" onclick="pickComp(0, this, true)">양쪽에서 받쳐 주었다</div>
         </div>
         <div class="feedback-msg" id="fb0"></div>
       </div>
@@ -1232,8 +1230,8 @@
     <div style="font-size:15px; font-weight:700; line-height:1.6;">일심동체의 뜻으로 알맞은 것은?</div>
     <div class="cq-options">
       <div class="cq-option" onclick="pickConfirm(this, false)">혼자 힘으로 어려움을 이겨내는 것</div>
-      <div class="cq-option" onclick="pickConfirm(this, true)">마음과 몸이 하나가 되어 힘을 합치는 것</div>
       <div class="cq-option" onclick="pickConfirm(this, false)">서로 다른 목표를 향해 가는 것</div>
+      <div class="cq-option" onclick="pickConfirm(this, true)">마음과 몸이 하나가 되는 것</div>
     </div>
     <div class="result-msg" id="cqResult"></div>
   </div>
@@ -2284,7 +2282,7 @@ function pickConfirm(el, correct) {
     earnedScore += 10; totalScore += 10;
   } else {
     el.classList.add('selected-wrong');
-    msg.textContent = '💡 정답은 "마음과 몸이 하나가 되어 힘을 합치는 것"이에요!';
+    msg.textContent = '💡 정답은 "마음과 몸이 하나가 되는 것"이에요!';
     msg.className = 'result-msg show no';
     totalScore += 10;
   }
