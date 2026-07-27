@@ -1476,7 +1476,8 @@ let confirmDone = false;
 let totalScore = 0;
 let earnedScore = 0;
 let draggingTile = null;
-let wrongCount = 0; // 오답 누른 횟수
+let wrongCount = 0;
+let p1Missed=false; // 오답 누른 횟수
 
 // ── 진행 바 (별) ──
 const starLabels = ['1단계 진행 중','2단계 진행 중','3단계 진행 중','4단계 진행 중','5단계 진행 중'];
@@ -1517,9 +1518,9 @@ function goComplete() {
   ];
 
   let grade;
-  if (wrongCount === 0)      grade = grades[0];
-  else if (wrongCount === 1) grade = grades[1];
-  else if (wrongCount === 2) grade = grades[2];
+  if (wrongCount<=1)      grade=grades[0];
+  else if (wrongCount<=3) grade=grades[1];
+  else if (wrongCount<=5) grade=grades[2];
   else                       grade = grades[3];
 
   setTimeout(() => {
@@ -1540,7 +1541,7 @@ function goComplete() {
     const prevGrade = prog['baeeunmangdeok']?.grade;
     // 더 좋은 등급이면 업데이트
     const gradeOrder = { diamond:4, gold:3, silver:2, bronze:1 };
-    const newGradeKey = wrongCount === 0 ? 'diamond' : wrongCount === 1 ? 'gold' : wrongCount === 2 ? 'silver' : 'bronze';
+    const newGradeKey = grade.key;
     if (!prevGrade || (gradeOrder[newGradeKey] > gradeOrder[prevGrade])) {
       prog['baeeunmangdeok'] = { grade: newGradeKey, date: new Date().toISOString() };
       localStorage.setItem('sajasungeo_progress', JSON.stringify(prog));
@@ -1737,6 +1738,7 @@ function checkP1() {
     p1r.textContent = '\ud83e\udd14 \uc21c\uc11c\ub97c \ub2e4\uc2dc \uc0b4\ud3b4\ubcf4\uc138\uc694!';
     p1r.classList.add('miss');
     p1r.classList.add('show');
+    if(!p1Missed){p1Missed=true;wrongCount++;}
   } else {
     p1r.classList.remove('show');
     p1r.classList.remove('miss');
@@ -1757,7 +1759,7 @@ function pickChar(idx, el, correct) {
     earnedScore += 5;
   } else {
     el.classList.add('selected-wrong');
-    ci.classList.add('wrong');
+    ci.classList.add('wrong');wrongCount++;
   }
   totalScore += 5;
   charDone[idx] = true;
@@ -1785,7 +1787,7 @@ function pickFinal(el, correct) {
     el.classList.add('selected-wrong');
     msg.textContent = '🤔 다시 읽어보세요. 은혜를 입고도 그 고마움을 잊고 도리어 해를 끼치는 나쁜 행동이라는 뜻이에요!';
     msg.className = 'result-msg show no';
-    totalScore += 10;
+    totalScore += 10;wrongCount++;
     document.getElementById('btn2').disabled = false;
   }
 }
@@ -1810,7 +1812,7 @@ function pickComp(idx, el, correct) {
     opts.forEach(o => { if (o.onclick && o.onclick.toString().includes('true')) o.classList.add('selected-correct'); });
     fb.textContent = '💡 아쉬워요! 정답을 확인해보세요.';
     fb.className = 'feedback-msg show no';
-    totalScore += 10;
+    totalScore += 10;wrongCount++;
   }
   compCount++;
   if (compCount === 2) {
@@ -1865,7 +1867,7 @@ function pickSituation(idx) {
     } else {
       msg.textContent = '💡 ①번과 ③번이 배은망덕에 어울리는 상황이에요!';
       msg.className = 'result-msg show no';
-      totalScore += 10;
+      totalScore += 10;wrongCount++;
     }
     setTimeout(() => { document.getElementById('confirmQuiz').style.display = 'block'; }, 500);
   }
@@ -2283,7 +2285,7 @@ function pickConfirm(el, correct) {
     el.classList.add('selected-wrong');
     msg.textContent = '💡 정답은 "은혜를 잊고 해를 끼치는 것"이에요!';
     msg.className = 'result-msg show no';
-    totalScore += 10;
+    totalScore += 10;wrongCount++;
   }
   document.getElementById('btn4').disabled = false;
 }
